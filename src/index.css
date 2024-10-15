@@ -1,6 +1,6 @@
 @import url(./reset.css);
 @import url(./fonts.css);
-
+@import url(./animations.css);
 :root {
   --main-font-family: 'Satoshi';
 
@@ -76,15 +76,97 @@
 }
 
 div.app-weather {
+  min-height: 100vh;
   display: grid;
-  grid-template-columns: 20% 80%;
+  place-content: center;
+  background-color: #000;
+}
+
+div.app-weather.cloudy {
+  background: -moz-linear-gradient(
+    141deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    141deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  background: linear-gradient(
+    141deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#00d4ff",GradientType=1);
+}
+div.app-weather.rainy {
+  background: rgb(48, 48, 48);
+  background: -moz-linear-gradient(
+    141deg,
+    rgba(48, 48, 48, 1) 0%,
+    rgba(102, 102, 130, 1) 35%,
+    rgba(163, 163, 163, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    141deg,
+    rgba(48, 48, 48, 1) 0%,
+    rgba(102, 102, 130, 1) 35%,
+    rgba(163, 163, 163, 1) 100%
+  );
+  background: linear-gradient(
+    141deg,
+    rgba(48, 48, 48, 1) 0%,
+    rgba(102, 102, 130, 1) 35%,
+    rgba(163, 163, 163, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#303030",endColorstr="#a3a3a3",GradientType=1);
+}
+div.app-weather.sunny {
+  background: rgb(203, 75, 22);
+  background: -moz-linear-gradient(
+    141deg,
+    rgba(203, 75, 22, 1) 0%,
+    rgba(200, 139, 0, 1) 44%,
+    rgba(223, 90, 35, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    141deg,
+    rgba(203, 75, 22, 1) 0%,
+    rgba(200, 139, 0, 1) 44%,
+    rgba(223, 90, 35, 1) 100%
+  );
+  background: linear-gradient(
+    141deg,
+    rgba(203, 75, 22, 1) 0%,
+    rgba(200, 139, 0, 1) 44%,
+    rgba(223, 90, 35, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#cb4b16",endColorstr="#df5a23",GradientType=1);
+}
+
+/* ANIMATIONS */
+div.clouds {
+  position: absolute;
+  top: -350px;
+  width: 100%;
+  min-height: 100vh;
+  background: url(./assets/weather/clouds.png);
+  animation: cloudsMovement 50s linear infinite;
+  background-size: contain;
+  background-repeat: repeat-x;
+  z-index: 0;
+  opacity: 0.2;
 }
 
 body {
   min-height: 100vh;
   font-size: 100%;
   font-family: var(--main-font-family);
-  color: var(--black-950);
+  color: var(--white-light);
   line-height: 1.4;
   -webkit-hyphens: auto;
   -ms-hyphens: auto;
@@ -99,6 +181,9 @@ body {
 h1 {
   font-weight: 700;
   font-size: 2rem;
+}
+h1.h1-lg {
+  font-size: 4rem;
 }
 
 h2 {
@@ -233,20 +318,19 @@ label.input-label {
   font-weight: 600;
 }
 input.input {
-  background-color: var(--gray-100);
-  border: 1.5px solid var(--gray-400);
-  min-width: 350px;
+  color: var(--black-950);
+  background-color: transparent;
   width: 100%;
   padding: 12px 16px;
-  border-radius: var(--border-primary);
   margin-bottom: 2px;
 }
 input.input::placeholder {
+  color: var(--black-700);
   font-weight: 500;
 }
+
 input.input:focus {
-  outline-width: 1px;
-  outline-color: var(--primary-blue-800);
+  outline-width: 0px;
 }
 p.input-helper-text {
   color: var(--black-800);

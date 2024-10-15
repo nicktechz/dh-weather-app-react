@@ -1,17 +1,28 @@
-import Sidebar from './components/Sidebar';
+import { useRef, useState } from 'react';
+import WeatherCard from './components/WeatherCard';
 import './Weather.css';
 function Weather() {
-  const urlOptions = {
-    searchCity: 'Bogotá',
-    appID: process.env.OPEN_WEATHER_API_KEY,
-  };
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${urlOptions.searchCity}&appid=${urlOptions.appID}`;
+  const appRef = useRef();
+  function changeWeatherColor(code) {
+    const value = {
+      class: '',
+    };
+    switch (code) {
+      case code > 200 && code < 700:
+        return (value.class = 'rainy');
+      case code > 700 && code < 900:
+        return (value.class = 'cloudy');
+      default:
+        value.class = 'cloudy';
+    }
+
+    appRef.current.classList.add(value.class);
+  }
+
   return (
-    <div className="app-weather">
-      <Sidebar />
-      <div className="weather-box">
-        <h1>Bogotá, Colombia</h1>
-      </div>
+    <div className="app-weather" ref={appRef}>
+      <div className="clouds"></div>
+      <WeatherCard weatherColor={changeWeatherColor} />
     </div>
   );
 }
