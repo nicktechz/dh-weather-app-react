@@ -1,0 +1,63 @@
+div.weather-box {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  z-index: 100;
+  backdrop-filter: blur(2px);
+}
+div.weather-box div.weather-box-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* CARDS */
+div.weather-box div.cards-information {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  gap: 48px;
+}
+
+@media (max-width: 1024px) {
+  div.weather-box div.cards-information {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+div.weather-box div.card {
+  min-width: 250px;
+  min-height: 250px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-sm);
+  padding: 36px 18px;
+}
+div.weather-box div.card h4.card-title {
+  font-weight: 600;
+  color: var(--gray-600);
+}
+div.weather-box div.card div.card-header {
+  height: 20%;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);
+}
+div.weather-box div.card div.card-body {
+  height: 60%;
+}
+div.weather-box div.card div.card-body span.card-number {
+  display: block;
+  margin-top: 8px;
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+
+div.weather-box div.card div.card-footer {
+  height: 20%;
+}
