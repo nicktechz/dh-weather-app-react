@@ -4,7 +4,7 @@ div.form-search {
   top: 0;
   left: 0;
   z-index: 200;
-  height: 100vh;
+  height: 100dvh;
   width: 100%;
   display: flex;
   background-color: rgba(0, 0, 0, 0.458);
@@ -96,6 +96,11 @@ button.search-icon:hover {
   }
 }
 @media (min-width: 480px) {
+  div.form-search {
+    padding: 1.5rem;
+  }
+}
+@media (min-width: 0) {
   div.form-search {
     padding: 1.5rem;
   }
