@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Weather from './routes/Weather';
 import NotFoundPage from './error/404';
 import StyleGuide from './routes/StyleGuide';
+import Weather from './routes/Weather';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +25,5 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={router} />
-    <App />
   </StrictMode>
 );

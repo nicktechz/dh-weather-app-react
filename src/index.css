@@ -75,6 +75,11 @@
   --btn-transition: all 0.3s;
 }
 
+div.app-weather {
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+
 body {
   min-height: 100vh;
   font-size: 100%;
