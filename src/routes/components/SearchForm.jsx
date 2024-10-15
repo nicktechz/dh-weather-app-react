@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useGetAutocomplete from '../../hooks/useGetAutocomplete';
 import './SearchForm.css';
 function SearchForm({ onSubmit }) {
   const { cities, search, resetCities } = useGetAutocomplete();
   const [open, setOpen] = useState(false);
+  const searchInput = useRef();
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -12,6 +13,10 @@ function SearchForm({ onSubmit }) {
     };
     document.addEventListener('keydown', handleKeyDown);
   }, []);
+  useEffect(() => {
+    open ? searchInput.current.focus() : null;
+  }, [open]);
+
   return open ? (
     <div className="form-search" onClick={() => setOpen(false)}>
       <form
@@ -41,6 +46,7 @@ function SearchForm({ onSubmit }) {
               className="input input-search"
               placeholder="Search your city..."
               onInput={(event) => search(event.target.value)}
+              ref={searchInput}
             />
           </div>
         </div>
@@ -55,6 +61,7 @@ function SearchForm({ onSubmit }) {
                     setOpen(false);
                     resetCities();
                   }}
+                  key={city.id}
                 >
                   <div className="city-info-box">
                     <div
@@ -87,7 +94,11 @@ function SearchForm({ onSubmit }) {
 
         <div className="form-footer-box">
           <div className="form-footer">
-            <a href="" className="form-github-link">
+            <a
+              href="https://github.com/nicktechz/dh-weather-app-react"
+              target="_blank"
+              className="form-github-link"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"

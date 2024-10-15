@@ -8,13 +8,14 @@ export default function useGetAutocomplete() {
       apiKey: import.meta.env.VITE_GEOPIFY_API,
     };
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${urlOptions.searchQuery}&type=city&format=json&apiKey=${urlOptions.apiKey}`;
-    if (searchQuery.length > 3) {
+    if (searchQuery.length >= 3) {
       try {
         const response = await fetch(url);
         const data = await response.json();
         const values = data.results;
         const formattedArr = values.map((element) => {
           const obj = {
+            id: element.place_id,
             city: element.city,
             country: element.country,
             code: element.country_code,
