@@ -155,7 +155,7 @@ div.clouds {
   width: 100%;
   min-height: 100vh;
   background: url(./assets/weather/clouds.png);
-  animation: cloudsMovement 50s linear infinite;
+  animation: cloudsMovement 300s linear infinite;
   background-size: contain;
   background-repeat: repeat-x;
   z-index: 0;
