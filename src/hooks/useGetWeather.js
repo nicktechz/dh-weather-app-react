@@ -20,7 +20,7 @@ export default function useGetWeather() {
   async function fetchWeather(city) {
     const urlOptions = {
       searchCity: city,
-      appID: import.meta.env.VITE_OPEN_WEATHER_API_KEY,
+      appID: import.meta.env.VITE_OPENWEATHER_API_KEY,
     };
     const baseUrl = `https://api.openweathermap.org/data/2.5/weather?q=${urlOptions.searchCity}&appid=${urlOptions.appID}`;
     try {
