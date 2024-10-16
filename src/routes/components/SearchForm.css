@@ -9,6 +9,7 @@ div.form-search {
   display: flex;
   background-color: rgba(0, 0, 0, 0.458);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 form.form-modal {
   margin: 0 auto;
