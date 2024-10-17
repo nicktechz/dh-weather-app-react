@@ -1,25 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useGetWeather from '../../hooks/useGetWeather';
 import SearchForm from './SearchForm';
 import getCurrentLocation from '../../helpers/getCurrentLocation';
 
 function WeatherCard() {
   const { information, fetchWeather } = useGetWeather();
-  const { userInformationLocation, getLocation } = getCurrentLocation();
-  const [userLocation, setUserLocation] = useState(null);
+  const { userLocation, getLocation } = getCurrentLocation();
   const searchCity = (latitude, longitude) => {
     fetchWeather(latitude, longitude);
   };
   useEffect(() => {
-    getLocation();
-    setUserLocation(userInformationLocation);
-  }, []);
-  useEffect(() => {
-    if (userLocation !== null) {
-      console.log('SOLICITANDO INFO API');
-      console.log(userLocation);
-      // return searchCity(userLocation.latitude, userLocation.longitude);
-    }
+    if (userLocation !== null)
+      return searchCity(userLocation.latitude, userLocation.longitude);
   }, [userLocation]);
 
   return (
