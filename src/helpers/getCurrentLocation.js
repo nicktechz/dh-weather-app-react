@@ -18,10 +18,9 @@ export default function getCurrentLocation() {
   function error(err) {
     console.error(`ERROR ${err.code}: ${err.message}`);
   }
-
-  useEffect(() => {
+  function getLocation() {
     navigator.geolocation.getCurrentPosition(success, error, options);
-  }, []);
+  }
 
-  return { userLocation };
+  return { userLocation, getLocation };
 }
