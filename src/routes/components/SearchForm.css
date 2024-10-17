@@ -15,7 +15,7 @@ form.form-modal {
   background-color: white;
   width: 100%;
   max-width: 47.375rem;
-  height: fit-content;
+  max-height: fit-content;
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px -3px #0000001a;
 }
@@ -28,7 +28,9 @@ div.form-header {
   align-items: center;
 }
 div.cities-prediction-box {
+  max-height: 500px;
   padding: 24px;
+  overflow: scroll;
 }
 div.cities-prediction-box div.city:not(:last-child) {
   margin-bottom: 12px;

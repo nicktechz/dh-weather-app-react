@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import useGetAutocomplete from '../../hooks/useGetAutocomplete';
 import './SearchForm.css';
 function SearchForm({ onSubmit }) {
-  const { cities, search, resetCities } = useGetAutocomplete();
+  const { results, searchCities, resetCities } = useGetAutocomplete();
   const [open, setOpen] = useState(false);
   const searchInput = useRef();
   useEffect(() => {
@@ -45,33 +45,33 @@ function SearchForm({ onSubmit }) {
               type="text"
               className="input input-search"
               placeholder="Search your city..."
-              onInput={(event) => search(event.target.value)}
+              onInput={(event) => searchCities(event.target.value)}
               ref={searchInput}
             />
           </div>
         </div>
 
         <div className="cities-prediction-box">
-          {cities
-            ? cities.map((city) => (
+          {results
+            ? results.map((city) => (
                 <div
                   className="city"
                   onClick={() => {
-                    onSubmit(city.city);
+                    onSubmit(city.lat, city.lng);
                     setOpen(false);
                     resetCities();
                   }}
-                  key={city.id}
+                  key={city.latitude}
                 >
                   <div className="city-info-box">
                     <div
                       className="city-flag-box"
                       style={{
-                        backgroundImage: `url(https://flagsapi.com/${city.code.toUpperCase()}/shiny/64.png)`,
+                        backgroundImage: `url(https://flagsapi.com/${city.country}/shiny/64.png)`,
                       }}
                     ></div>
                     <span>
-                      {city.city} - {city.country}
+                      {city.name} - {city.country}
                     </span>
                   </div>
                   <svg

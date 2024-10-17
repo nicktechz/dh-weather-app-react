@@ -3,8 +3,10 @@ import makeFirstLetterUppercase from '../helpers/makeFirstLetterUppercase';
 
 export default function useGetWeather() {
   const [information, setInformation] = useState({
-    city: '',
-    country: '',
+    basicInformation: {
+      name: '',
+      countryCode: '',
+    },
     temperature: {
       current: '',
       min: '',
@@ -13,35 +15,52 @@ export default function useGetWeather() {
     },
     humidity: '',
     weatherDescription: '',
-    seaLevel: '',
+    pressure: '',
     weatherCode: '',
   });
 
-  async function fetchWeather(city) {
-    const urlOptions = {
-      searchCity: city,
-      appID: import.meta.env.VITE_OPENWEATHER_API_KEY,
-    };
-    const baseUrl = `https://api.openweathermap.org/data/2.5/weather?q=${urlOptions.searchCity}&appid=${urlOptions.appID}`;
+  async function getCityInformation(latitude, longitude) {
+    const url = `http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=3&appid=${
+      import.meta.env.VITE_OPENWEATHER_API_KEY
+    }`;
     try {
-      const response = await fetch(baseUrl);
+      const response = await fetch(url);
+      const cityInformation = await response.json();
+      console.log(cityInformation);
+      return { cityInformation };
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function fetchWeather(latitude, longitude) {
+    const options = { method: 'GET', headers: { accept: 'application/json' } };
+    const baseUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&appid=${
+      import.meta.env.VITE_OPENWEATHER_API_KEY
+    }&units=metric`;
+    try {
+      const response = await fetch(baseUrl, options);
       const data = await response.json();
+      const { cityInformation } = await getCityInformation(latitude, longitude);
+      console.log(cityInformation);
       setInformation({
         ...information,
-        city: data.name,
-        country: data.sys.country,
-        temperature: {
-          current: `${Math.ceil(data.main.temp - 273.15)}°`,
-          min: `${Math.ceil(data.main.temp_min - 273.15)}°`,
-          max: `${Math.ceil(data.main.temp_max - 273.15)}°`,
-          feelsLike: `${Math.ceil(data.main.feels_like - 273.15)}°`,
+        basicInformation: {
+          name: cityInformation[0].name,
+          countryCode: cityInformation[0].country,
         },
-        humidity: data.main.humidity,
+        temperature: {
+          current: `${Math.ceil(data.current.temp)}°`,
+          min: `${Math.ceil(data.daily[0].temp.min)}°`,
+          max: `${Math.ceil(data.daily[0].temp.max)}°`,
+          feelsLike: `${Math.ceil(data.current.feels_like)}°`,
+        },
+        humidity: data.current.humidity,
         weatherDescription: makeFirstLetterUppercase(
-          data.weather[0].description
+          data.current.weather[0].description
         ),
-        seaLevel: data.main.sea_level,
-        weatherCode: data.weather[0].id,
+        pressure: data.current.pressure,
+        weatherCode: data.current.weather[0].id,
       });
     } catch (error) {
       console.error(error);

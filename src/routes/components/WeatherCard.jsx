@@ -1,24 +1,28 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import useGetWeather from '../../hooks/useGetWeather';
 import SearchForm from './SearchForm';
+import getCurrentLocation from '../../helpers/getCurrentLocation';
 
 function WeatherCard({ weatherColor }) {
   const { information, fetchWeather } = useGetWeather();
-  const searchCity = (city) => {
-    fetchWeather(city);
+  const { userLocation } = getCurrentLocation();
+  const searchCity = (latitude, longitude) => {
+    fetchWeather(latitude, longitude);
     weatherColor(information.weatherCode);
   };
-
   useEffect(() => {
-    fetchWeather('Bogota');
-    weatherColor(information.weatherCode);
-  }, []);
+    if (userLocation !== null)
+      return searchCity(userLocation.latitude, userLocation.longitude);
+  }, [userLocation]);
 
   return (
     <div className="weather-box">
       <div className="weather-box-header">
         <div>
-          <h2>{information.city}</h2>
+          <h2>
+            {information.basicInformation.name},{' '}
+            {information.basicInformation.countryCode}
+          </h2>
           <h1 className="h1-lg">{information.temperature.current}</h1>
           <h2>{information.weatherDescription}</h2>
         </div>
@@ -95,7 +99,7 @@ function WeatherCard({ weatherColor }) {
             <h4 className="card-title">Atmospheric Pressure</h4>
           </div>
           <div className="card-body">
-            <span className="card-number">{information.seaLevel}hPa</span>
+            <span className="card-number">{information.pressure}hPa</span>
           </div>
           <div className="card-footer">
             <span>This measurement is at the sea level</span>
