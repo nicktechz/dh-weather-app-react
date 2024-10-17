@@ -61,7 +61,7 @@ function SearchForm({ onSubmit }) {
                     setOpen(false);
                     resetCities();
                   }}
-                  key={city.latitude}
+                  key={city.lat}
                 >
                   <div className="city-info-box">
                     <div

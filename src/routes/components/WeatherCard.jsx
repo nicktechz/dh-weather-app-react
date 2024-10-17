@@ -5,7 +5,7 @@ import getCurrentLocation from '../../helpers/getCurrentLocation';
 
 function WeatherCard() {
   const { information, fetchWeather } = useGetWeather();
-  const { userLocation, getLocation } = getCurrentLocation();
+  const { userLocation } = getCurrentLocation();
   const searchCity = (latitude, longitude) => {
     fetchWeather(latitude, longitude);
   };

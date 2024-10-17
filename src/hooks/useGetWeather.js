@@ -20,7 +20,7 @@ export default function useGetWeather() {
   });
 
   async function getCityInformation(latitude, longitude) {
-    const url = `http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=3&appid=${
+    const url = `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=3&appid=${
       import.meta.env.VITE_OPENWEATHER_API_KEY
     }`;
     try {

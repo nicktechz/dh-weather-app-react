@@ -1,17 +1,19 @@
 import { useState } from 'react';
-import cities from '../helpers/cities.json';
 
 export default function useGetAutocomplete() {
   const [results, setResults] = useState(null);
-  function searchCities(query) {
-    const foundCities = cities
-      .filter(
-        (item) =>
-          item.name && item.name.toLowerCase().includes(query.toLowerCase())
-      )
-      .slice(0, 10);
-    setResults(foundCities);
-    console.log(results);
+
+  async function searchCities(query) {
+    if (query.length >= 3) {
+      try {
+        const url = `https://x8ki-letl-twmt.n7.xano.io/api:ADz4CED1/cities?searchQuery=${query}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        setResults(data.slice(0, 10));
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
   function resetCities() {
     setResults(null);
