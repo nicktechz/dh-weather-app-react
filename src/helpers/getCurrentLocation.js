@@ -1,19 +1,15 @@
-import { useEffect, useState } from 'react';
-
 export default function getCurrentLocation() {
-  const [userLocation, setUserLocation] = useState(null);
+  const userInformationLocation = {
+    latitude: null,
+    longitude: null,
+  };
   const options = {
     timeout: 5000,
     maximumAge: 0,
   };
   function success(position) {
-    setUserLocation({
-      ...userLocation,
-      cityName: 'Ejemplo',
-      country: 'CO',
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-    });
+    userInformationLocation.latitude = position.coords.latitude;
+    userInformationLocation.longitude = position.coords.longitude;
   }
   function error(err) {
     console.error(`ERROR ${err.code}: ${err.message}`);
@@ -22,5 +18,5 @@ export default function getCurrentLocation() {
     navigator.geolocation.getCurrentPosition(success, error, options);
   }
 
-  return { userLocation, getLocation };
+  return { userInformationLocation, getLocation };
 }
