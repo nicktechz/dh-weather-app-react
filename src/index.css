@@ -332,9 +332,6 @@ input.input::placeholder {
 input.input:focus {
   outline-width: 0px;
 }
-input.input::-moz-focus-outer {
-  outline-width: 0px;
-}
 p.input-helper-text {
   color: var(--black-800);
   font-size: 0.9rem;

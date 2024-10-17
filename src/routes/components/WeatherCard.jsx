@@ -3,12 +3,11 @@ import useGetWeather from '../../hooks/useGetWeather';
 import SearchForm from './SearchForm';
 import getCurrentLocation from '../../helpers/getCurrentLocation';
 
-function WeatherCard({ weatherColor }) {
+function WeatherCard() {
   const { information, fetchWeather } = useGetWeather();
   const { userLocation } = getCurrentLocation();
   const searchCity = (latitude, longitude) => {
     fetchWeather(latitude, longitude);
-    weatherColor(information.weatherCode);
   };
   useEffect(() => {
     if (userLocation !== null)
