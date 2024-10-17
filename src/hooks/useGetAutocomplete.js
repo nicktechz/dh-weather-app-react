@@ -11,7 +11,6 @@ export default function useGetAutocomplete() {
       )
       .slice(0, 10);
     setResults(foundCities);
-    console.log(results);
   }
   function resetCities() {
     setResults(null);
