@@ -26,9 +26,7 @@ function WeatherCard() {
     }
   }, []);
   useEffect(() => {
-    if (userLatitude !== null && userLongitude !== null) {
-      return searchCity(userLatitude, userLongitude);
-    }
+    if (userLatitude && userLongitude) searchCity(userLatitude, userLongitude);
   }, [userLatitude, userLongitude]);
 
   return (
@@ -87,6 +85,36 @@ function WeatherCard() {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
+              <line x1="12" y1="20" x2="12" y2="10"></line>
+              <line x1="18" y1="20" x2="18" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="16"></line>
+            </svg>
+            <h4 className="card-title">Min/Max Temperature</h4>
+          </div>
+          <div className="card-body">
+            <span className="card-number">
+              {isLoading
+                ? '--'
+                : `${weather.temperature.min}/${weather.temperature.max}`}
+            </span>
+          </div>
+          <div className="card-footer">
+            <span>Min/max temperature in the last hour</span>
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-header">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#cecece"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
             </svg>
             <h4 className="card-title">Humidity</h4>
@@ -126,36 +154,6 @@ function WeatherCard() {
           </div>
           <div className="card-footer">
             <span>This measurement is at the sea level</span>
-          </div>
-        </div>
-        <div className="card">
-          <div className="card-header">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#cecece"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="12" y1="20" x2="12" y2="10"></line>
-              <line x1="18" y1="20" x2="18" y2="4"></line>
-              <line x1="6" y1="20" x2="6" y2="16"></line>
-            </svg>
-            <h4 className="card-title">Min/Max Temperature</h4>
-          </div>
-          <div className="card-body">
-            <span className="card-number">
-              {isLoading
-                ? '--'
-                : `${weather.temperature.min}/${weather.temperature.max}`}
-            </span>
-          </div>
-          <div className="card-footer">
-            <span>Min/max temperature in the last hour</span>
           </div>
         </div>
       </div>
