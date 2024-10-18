@@ -12,13 +12,28 @@ function WeatherCard() {
   const searchCity = (latitude, longitude) => {
     fetchWeather(latitude, longitude);
   };
+
   useEffect(() => {
+    if (userLatitude && userLongitude) {
+      getUserLocation()
+        .then((response) => {
+          if (
+            userLatitude !== response.coords.latitude ||
+            userLongitude !== response.coords.longitude
+          ) {
+            setUserLatitude(response.coords.latitude);
+            setUserLongitude(response.coords.longitude);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
     if (!userLatitude && !userLongitude) {
       getUserLocation()
         .then((response) => {
           setUserLatitude(response.coords.latitude);
           setUserLongitude(response.coords.longitude);
-          console.log('LOOKING FOR USER LOCATION...');
         })
         .catch((error) => {
           console.error(error);
@@ -26,7 +41,9 @@ function WeatherCard() {
     }
   }, []);
   useEffect(() => {
-    if (userLatitude && userLongitude) searchCity(userLatitude, userLongitude);
+    if (userLatitude && userLongitude) {
+      searchCity(userLatitude, userLongitude);
+    }
   }, [userLatitude, userLongitude]);
 
   return (
