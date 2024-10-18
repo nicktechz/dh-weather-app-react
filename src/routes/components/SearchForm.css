@@ -32,6 +32,10 @@ div.cities-prediction-box {
   padding: 24px;
   overflow: scroll;
 }
+div.cities-prediction-box::-webkit-scrollbar {
+  display: none;
+  scrollbar-width: none;
+}
 div.cities-prediction-box div.city:not(:last-child) {
   margin-bottom: 12px;
 }
