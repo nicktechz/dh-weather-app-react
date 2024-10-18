@@ -2,28 +2,48 @@ import { useEffect } from 'react';
 import useGetWeather from '../../hooks/useGetWeather';
 import SearchForm from './SearchForm';
 import getCurrentLocation from '../../helpers/getCurrentLocation';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 function WeatherCard() {
-  const { information, fetchWeather } = useGetWeather();
-  const { userLocation } = getCurrentLocation();
+  const { weather, fetchWeather, isLoading } = useGetWeather();
+  const { getUserLocation } = getCurrentLocation();
+  const [userLatitude, setUserLatitude] = useLocalStorage('latitude', null);
+  const [userLongitude, setUserLongitude] = useLocalStorage('longitude', null);
   const searchCity = (latitude, longitude) => {
     fetchWeather(latitude, longitude);
   };
   useEffect(() => {
-    if (userLocation !== null)
-      return searchCity(userLocation.latitude, userLocation.longitude);
-  }, [userLocation]);
+    if (!userLatitude && !userLongitude) {
+      getUserLocation()
+        .then((response) => {
+          setUserLatitude(response.coords.latitude);
+          setUserLongitude(response.coords.longitude);
+          console.log('LOOKING FOR USER LOCATION...');
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, []);
+  useEffect(() => {
+    if (userLatitude !== null && userLongitude !== null) {
+      return searchCity(userLatitude, userLongitude);
+    }
+  }, [userLatitude, userLongitude]);
 
   return (
     <div className="weather-box">
       <div className="weather-box-header">
         <div>
           <h2>
-            {information.basicInformation.name},{' '}
-            {information.basicInformation.countryCode}
+            {isLoading
+              ? null
+              : `${weather.basicInformation.name}, ${weather.basicInformation.countryCode}`}
           </h2>
-          <h1 className="h1-lg">{information.temperature.current}</h1>
-          <h2>{information.weatherDescription}</h2>
+          <h1 className="h1-lg">
+            {isLoading ? '--' : weather.temperature.current}
+          </h1>
+          <h2>{isLoading ? null : weather.weatherDescription}</h2>
         </div>
         <SearchForm onSubmit={searchCity} />
       </div>
@@ -47,7 +67,7 @@ function WeatherCard() {
           </div>
           <div className="card-body">
             <span className="card-number">
-              {information.temperature.feelsLike}
+              {isLoading ? '--' : weather.temperature.feelsLike}
             </span>
           </div>
           <div className="card-footer">
@@ -72,7 +92,9 @@ function WeatherCard() {
             <h4 className="card-title">Humidity</h4>
           </div>
           <div className="card-body">
-            <span className="card-number">{information.humidity}%</span>
+            <span className="card-number">
+              {isLoading ? '--' : weather.humidity}%
+            </span>
           </div>
           <div className="card-footer">
             <span>Average for the week</span>
@@ -98,7 +120,9 @@ function WeatherCard() {
             <h4 className="card-title">Atmospheric Pressure</h4>
           </div>
           <div className="card-body">
-            <span className="card-number">{information.pressure}hPa</span>
+            <span className="card-number">
+              {isLoading ? '--' : weather.pressure}hPa
+            </span>
           </div>
           <div className="card-footer">
             <span>This measurement is at the sea level</span>
@@ -125,7 +149,9 @@ function WeatherCard() {
           </div>
           <div className="card-body">
             <span className="card-number">
-              {information.temperature.min}/{information.temperature.max}
+              {isLoading
+                ? '--'
+                : `${weather.temperature.min}/${weather.temperature.max}`}
             </span>
           </div>
           <div className="card-footer">
