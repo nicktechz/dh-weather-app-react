@@ -1,50 +1,48 @@
-import { useEffect } from 'react';
-import useGetWeather from '../../hooks/useGetWeather';
+import { useEffect, useState } from 'react';
 import SearchForm from './SearchForm';
 import getCurrentLocation from '../../helpers/getCurrentLocation';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { useGetWeather } from '../../hooks/useGetWeather';
+import makeFirstLetterUppercase from '../../helpers/makeFirstLetterUppercase';
 
 function WeatherCard() {
-  const { weather, fetchWeather, isLoading } = useGetWeather();
   const { getUserLocation } = getCurrentLocation();
-  const [userLatitude, setUserLatitude] = useLocalStorage('latitude', null);
-  const [userLongitude, setUserLongitude] = useLocalStorage('longitude', null);
+  const [latitude, setLatitude] = useLocalStorage('latitude', null);
+  const [longitude, setLongitude] = useLocalStorage('longitude', null);
+  const { data: weather, isLoading } = useGetWeather(latitude, longitude);
+
   const searchCity = (latitude, longitude) => {
-    fetchWeather(latitude, longitude);
+    setLatitude(latitude);
+    setLongitude(longitude);
   };
 
   useEffect(() => {
-    if (userLatitude && userLongitude) {
+    if (latitude && longitude) {
       getUserLocation()
         .then((response) => {
           if (
-            userLatitude !== response.coords.latitude ||
-            userLongitude !== response.coords.longitude
+            latitude !== response.coords.latitude ||
+            longitude !== response.coords.longitude
           ) {
-            setUserLatitude(response.coords.latitude);
-            setUserLongitude(response.coords.longitude);
+            setLatitude(response.coords.latitude);
+            setLongitude(response.coords.longitude);
           }
         })
         .catch((error) => {
           console.error(error);
         });
     }
-    if (!userLatitude && !userLongitude) {
+    if (!latitude && !longitude) {
       getUserLocation()
         .then((response) => {
-          setUserLatitude(response.coords.latitude);
-          setUserLongitude(response.coords.longitude);
+          setLatitude(response.coords.latitude);
+          setLongitude(response.coords.longitude);
         })
         .catch((error) => {
           console.error(error);
         });
     }
   }, []);
-  useEffect(() => {
-    if (userLatitude && userLongitude) {
-      searchCity(userLatitude, userLongitude);
-    }
-  }, [userLatitude, userLongitude]);
 
   return (
     <div className="weather-box">
@@ -53,12 +51,18 @@ function WeatherCard() {
           <h2>
             {isLoading
               ? null
-              : `${weather.basicInformation.name}, ${weather.basicInformation.countryCode}`}
+              : `${weather?.cityInformation[0].name}, ${weather?.cityInformation[0].country}`}
           </h2>
           <h1 className="h1-lg">
-            {isLoading ? '--' : weather.temperature.current}
+            {isLoading ? '--' : Math.round(weather?.current.temp)}
           </h1>
-          <h2>{isLoading ? null : weather.weatherDescription}</h2>
+          <h2>
+            {isLoading
+              ? null
+              : makeFirstLetterUppercase(
+                  weather?.current.weather[0].description
+                )}
+          </h2>
         </div>
         <SearchForm onSubmit={searchCity} />
       </div>
@@ -82,7 +86,7 @@ function WeatherCard() {
           </div>
           <div className="card-body">
             <span className="card-number">
-              {isLoading ? '--' : weather.temperature.feelsLike}
+              {isLoading ? '--' : Math.round(weather?.current.feels_like)}
             </span>
           </div>
           <div className="card-footer">
@@ -112,7 +116,9 @@ function WeatherCard() {
             <span className="card-number">
               {isLoading
                 ? '--'
-                : `${weather.temperature.min}/${weather.temperature.max}`}
+                : `${Math.round(weather?.daily[0].temp.min)}/${Math.round(
+                    weather?.daily[0].temp.max
+                  )}`}
             </span>
           </div>
           <div className="card-footer">
@@ -138,7 +144,7 @@ function WeatherCard() {
           </div>
           <div className="card-body">
             <span className="card-number">
-              {isLoading ? '--' : weather.humidity}%
+              {isLoading ? '--' : weather?.current.humidity}%
             </span>
           </div>
           <div className="card-footer">
@@ -166,7 +172,7 @@ function WeatherCard() {
           </div>
           <div className="card-body">
             <span className="card-number">
-              {isLoading ? '--' : weather.pressure}hPa
+              {isLoading ? '--' : weather?.current.pressure}hPa
             </span>
           </div>
           <div className="card-footer">
